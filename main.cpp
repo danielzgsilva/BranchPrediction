@@ -11,7 +11,7 @@ int main(int argc, char** argv)
     predictor_name = argv[1];
 
     std::cout << "COMMAND" << std::endl;
-    std::cout << "./" + std::string(argv[0]) << " ";
+    std::cout << std::string(argv[0]) << " ";
 
     Predictor predictor;
 
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     {
         params.B = atoi(argv[2]);
         trace_file = argv[3];
-        predictor = Predictor(predictor_name, params);
+        predictor.initialize(predictor_name, params);
         std::cout << predictor_name << " " << params.B;
     }
     else if (predictor_name == "bimodal")
@@ -50,7 +50,19 @@ int main(int argc, char** argv)
         std::cout << "predictor " + predictor_name + " is not supported!" << std::endl;
         return -1;
     }
-    std::cout << " " << trace_file << std::endl;
+
+    // find name of trace file from provided trace file path
+    std::string trace_name;
+    std::size_t pos = trace_file.find_last_of("/\\");
+    if (pos == std::string::npos)
+    {
+        trace_name = trace_file;
+    }
+    else
+    {
+        trace_name =  trace_file.substr(pos + 1);
+    }
+    std::cout << " " << trace_name << std::endl;
     
 
     // Trace file stream
@@ -85,6 +97,8 @@ int main(int argc, char** argv)
             // hex to binary
             std::stringstream ss_hex(hex_address);
             ss_hex >> std::hex >> address;
+
+           // std::cout << address << " " << outcome << std::endl;
 
             // Make prediction
             prediction = predictor.predict();

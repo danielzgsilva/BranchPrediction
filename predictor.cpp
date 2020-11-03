@@ -1,6 +1,6 @@
 #include "headers.h"
 
-Predictor::Predictor(std::string predictor, Params params)
+void Predictor::initialize(std::string predictor, Params params)
 {
     this->predictor_name = predictor;
 
@@ -41,6 +41,7 @@ std::string Predictor::predict()
         
     }
 
+    std::cout << "SHOULD NOT BE HERE" << std::endl;
     return "b";
 }
 

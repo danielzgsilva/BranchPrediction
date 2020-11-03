@@ -17,9 +17,8 @@ struct Params
 class Smith
 {
     public:
-        Smith(unsigned int B);
         unsigned long predictions, mispredictions;
-        unsigned int B, counter, counter_min, counter_max; 
+        int counter, B, counter_min, counter_max, decision_point; 
 
         // initial counter values based off counter size
         std::map<unsigned int, unsigned int> initial_vals = {
@@ -30,6 +29,9 @@ class Smith
             {5, 16},
             {6, 32},
         };
+
+        Smith(unsigned int B);
+        Smith() {};
 
         std::string predict();
         void update(std::string outcome, std::string prediction);
@@ -42,8 +44,10 @@ class Predictor
         std::string predictor_name;
         Smith smith;
 
-        Predictor(std::string predictor, Params params);
+        //Predictor(std::string predictor, Params params);
+        Predictor() {};
         
+        void initialize(std::string predictor, Params params);
         std::string predict(); 
         void update(std::string outcome, std::string prediction);
         void print_results();
