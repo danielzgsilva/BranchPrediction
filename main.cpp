@@ -19,14 +19,13 @@ int main(int argc, char** argv)
     {
         params.B = atoi(argv[2]);
         trace_file = argv[3];
-        predictor.initialize(predictor_name, params);
         std::cout << predictor_name << " " << params.B;
     }
     else if (predictor_name == "bimodal")
     {
         params.M2 = atoi(argv[2]);
         trace_file = argv[3];
-        std::cout << predictor_name << " " << params.M1;
+        std::cout << predictor_name << " " << params.M2;
     }
     else if (predictor_name == "gshare")
     {
@@ -51,6 +50,9 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    // Initializes predictor counter values, history, etc.
+    predictor.initialize(predictor_name, params);
+
     // find name of trace file from provided trace file path
     std::string trace_name;
     std::size_t pos = trace_file.find_last_of("/\\");
@@ -67,9 +69,8 @@ int main(int argc, char** argv)
 
     // Trace file stream
     std::ifstream input(trace_file);
+    
     unsigned long PC = 0;
-
-    unsigned long address;
     std::string line, hex_address, outcome, prediction;
 
     // Process input file
@@ -80,6 +81,7 @@ int main(int argc, char** argv)
             // ignore empty line
             if (line.empty()) 
             {
+                //std::cout << "EMPTY" << std::endl;
                 continue;
             }
 
@@ -93,15 +95,11 @@ int main(int argc, char** argv)
                 //std::string c_line = ss_line.str();
                 //action = c_line[3];
             }
-            
-            // hex to binary
-            std::stringstream ss_hex(hex_address);
-            ss_hex >> std::hex >> address;
 
-           // std::cout << address << " " << outcome << std::endl;
+            //std::cout << PC << ": " << hex_address << " " << outcome << std::endl;
 
             // Make prediction
-            prediction = predictor.predict();
+            prediction = predictor.predict(hex_address);
 
             // Update predictor counters and the misprediction count
             predictor.update(outcome, prediction);

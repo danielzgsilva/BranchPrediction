@@ -8,10 +8,11 @@
 #include <map>
 #include <cmath>
 #include <cassert>
+#include <cstdio>
 
 struct Params
 {
-    unsigned int B, M1, M2, N, K;
+    int B, M1, M2, N, K;
 };
 
 class Smith
@@ -30,7 +31,7 @@ class Smith
             {6, 32},
         };
 
-        Smith(unsigned int B);
+        Smith(int B);
         Smith() {};
 
         std::string predict();
@@ -38,17 +39,48 @@ class Smith
         void print_results();
 };
 
+class Bimodal
+{   
+    public: 
+        unsigned long predictions, mispredictions;
+        int M, num_entries;
+        int counter_min = 0;
+        int counter_max = 7;
+        int cur_idx = 0;
+
+        std::vector<int> prediction_table;
+
+        Bimodal(int M);
+        Bimodal() {};
+
+        std::string predict(std::string hex_pc);
+        void update(std::string outcome, std::string prediction);
+        void print_results();
+};
+
+class GShare
+{
+    public:
+        unsigned long predictions, mispredictions;
+        int M, N;
+
+        GShare(int M, int N);
+        GShare() {};
+
+};
+
 class Predictor
 {
     public:
         std::string predictor_name;
         Smith smith;
+        Bimodal bimodal;
+        GShare gshare;
 
-        //Predictor(std::string predictor, Params params);
         Predictor() {};
         
         void initialize(std::string predictor, Params params);
-        std::string predict(); 
+        std::string predict(std::string branch_pc); 
         void update(std::string outcome, std::string prediction);
         void print_results();
 };

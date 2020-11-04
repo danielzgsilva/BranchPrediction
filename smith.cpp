@@ -1,6 +1,6 @@
 #include "headers.h"
 
-Smith::Smith(unsigned int B)
+Smith::Smith(int B)
 {
     assert(B >= 1 && B <= 6 && "Counter bits must be 1 <= B <= 6");
 
@@ -12,11 +12,11 @@ Smith::Smith(unsigned int B)
     this->predictions = 0;
     this->mispredictions = 0;
 
-   // std::cout << this->counter << std::endl;
-    //std::cout << this->counter_min << std::endl;
-   // std::cout << this->counter_max << std::endl;
+    //std::cout << "initial counter: " << this->counter << std::endl;
+    //std::cout << "counter min: " << this->counter_min << std::endl;
+    //std::cout << "counter max: " << this->counter_max << std::endl;
     //std::cout << "decision point: " <<  this->decision_point << std::endl;
-   // std::cout << this->B << std::endl;
+    //std::cout << "num bits: " <<  this->B << std::endl;
 }
 
 std::string Smith::predict()
@@ -64,6 +64,6 @@ void Smith::print_results()
     std::cout << "OUTPUT" << std::endl;
     std::cout << "number of predictions: " << this->predictions << std::endl;
     std::cout << "number of mispredictions: " << this->mispredictions << std::endl;
-    std::cout << "misprediction rate: " << std::setprecision(4) << mispredict_rate << "%" << std::endl;
+    std::cout << "misprediction rate: " << std::setprecision(2) << std::fixed << mispredict_rate << "%" << std::endl;
     std::cout << "FINAL COUNTER CONTENT: " << this->counter << std::endl;
 }

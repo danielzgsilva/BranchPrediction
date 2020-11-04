@@ -10,7 +10,7 @@ void Predictor::initialize(std::string predictor, Params params)
     }
     else if (predictor == "bimodal")
     {
-        
+        this->bimodal = Bimodal((int)params.M2);
     }
     else if (predictor == "gshare")
     {
@@ -22,7 +22,7 @@ void Predictor::initialize(std::string predictor, Params params)
     }
 }
 
-std::string Predictor::predict()
+std::string Predictor::predict(std::string branch_pc)
 {
     if (this->predictor_name == "smith")
     {
@@ -30,7 +30,7 @@ std::string Predictor::predict()
     }
     else if (this->predictor_name == "bimodal")
     {
-        
+        return this->bimodal.predict(branch_pc);
     }
     else if (this->predictor_name == "gshare")
     {
@@ -53,7 +53,7 @@ void Predictor::update(std::string outcome, std::string prediction)
     }
     else if (this->predictor_name == "bimodal")
     {
-        
+        this->bimodal.update(outcome, prediction);
     }
     else if (this->predictor_name == "gshare")
     {
@@ -73,7 +73,7 @@ void Predictor::print_results()
     }
     else if (this->predictor_name == "bimodal")
     {
-        
+        this->bimodal.print_results();
     }
     else if (this->predictor_name == "gshare")
     {
