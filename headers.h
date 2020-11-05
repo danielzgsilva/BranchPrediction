@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cassert>
 #include <cstdio>
+#include <valarray>
 
 struct Params
 {
@@ -55,6 +56,7 @@ class Bimodal
 
         std::string predict(std::string hex_pc);
         void update(std::string outcome, std::string prediction);
+        void print_table();
         void print_results();
 };
 
@@ -62,11 +64,45 @@ class GShare
 {
     public:
         unsigned long predictions, mispredictions;
-        int M, N;
+        int M, N, num_entries, cur_idx;
+        int counter_min = 0;
+        int counter_max = 7;
+
+        std::vector<int> prediction_table;
+        std::vector<int> history;
 
         GShare(int M, int N);
         GShare() {};
 
+        std::string predict(std::string hex_pc);
+        void update(std::string outcome, std::string prediction);
+        void shift_history();
+        void update_history(std::string outcome);
+        void print_table();
+        void print_results();
+};
+
+class Hybrid
+{
+    public:
+        unsigned long predictions, mispredictions;
+        int K, M1, N, M2, cur_idx;
+        int chooser_min = 0;
+        int chooser_max = 3;
+        std::string last_chosen, gshare_prediction, bimodal_prediction;
+
+        std::vector<int> chooser;
+
+        Bimodal bimodal;
+        GShare gshare;
+
+        Hybrid(int K, int M1, int N, int M2);
+        Hybrid() {};
+
+        std::string predict(std::string hex_pc);
+        void update(std::string outcome, std::string prediction);
+        void print_results();
+        void print_chooser();
 };
 
 class Predictor
@@ -76,6 +112,7 @@ class Predictor
         Smith smith;
         Bimodal bimodal;
         GShare gshare;
+        Hybrid hybrid;
 
         Predictor() {};
         

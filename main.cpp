@@ -7,14 +7,16 @@ int main(int argc, char** argv)
     std::string predictor_name, trace_file;
     Params params = Params{0, 0, 0, 0, 0};
     
-    // Get arguments from command
+    // Get predictor type from command
     predictor_name = argv[1];
 
     std::cout << "COMMAND" << std::endl;
     std::cout << std::string(argv[0]) << " ";
 
+    // create predictor object
     Predictor predictor;
 
+    // extract predictor parameters from command
     if (predictor_name == "smith")
     {
         params.B = atoi(argv[2]);
@@ -67,7 +69,7 @@ int main(int argc, char** argv)
     std::cout << " " << trace_name << std::endl;
     
 
-    // Trace file stream
+    // Create trace file stream
     std::ifstream input(trace_file);
     
     unsigned long PC = 0;
@@ -81,7 +83,6 @@ int main(int argc, char** argv)
             // ignore empty line
             if (line.empty()) 
             {
-                //std::cout << "EMPTY" << std::endl;
                 continue;
             }
 
@@ -89,19 +90,10 @@ int main(int argc, char** argv)
             std::istringstream ss_line(line);
             if (!(ss_line >> hex_address >> outcome)) { break; }
 
-            // to ignore BOM characters
-            if (PC == 0)
-            {
-                //std::string c_line = ss_line.str();
-                //action = c_line[3];
-            }
-
-            //std::cout << PC << ": " << hex_address << " " << outcome << std::endl;
-
             // Make prediction
             prediction = predictor.predict(hex_address);
 
-            // Update predictor counters and the misprediction count
+            // Update predictor (update counter, history, etc.)
             predictor.update(outcome, prediction);
 
             PC++;

@@ -14,11 +14,11 @@ void Predictor::initialize(std::string predictor, Params params)
     }
     else if (predictor == "gshare")
     {
-        
+         this->gshare = GShare((int)params.M1, (int)params.N);
     }
     else if (predictor == "hybrid")
     {
-        
+        this->hybrid = Hybrid((int)params.K, (int)params.M1, (int)params.N, (int)params.M2);
     }
 }
 
@@ -34,15 +34,16 @@ std::string Predictor::predict(std::string branch_pc)
     }
     else if (this->predictor_name == "gshare")
     {
-        
+        return this->gshare.predict(branch_pc);
     }
     else if (this->predictor_name == "hybrid")
     {
-        
+        return this->hybrid.predict(branch_pc);
     }
-
-    std::cout << "SHOULD NOT BE HERE" << std::endl;
-    return "b";
+    else
+    {
+        assert(false &&  "predictor not supported!");
+    }
 }
 
 void Predictor::update(std::string outcome, std::string prediction)
@@ -57,11 +58,11 @@ void Predictor::update(std::string outcome, std::string prediction)
     }
     else if (this->predictor_name == "gshare")
     {
-        
+        this->gshare.update(outcome, prediction);
     }
     else if (this->predictor_name == "hybrid")
     {
-        
+        this->hybrid.update(outcome, prediction);
     }
 }
 
@@ -77,10 +78,10 @@ void Predictor::print_results()
     }
     else if (this->predictor_name == "gshare")
     {
-        
+        this->gshare.print_results();
     }
     else if (this->predictor_name == "hybrid")
     {
-        
+        this->hybrid.print_results();
     }
 }

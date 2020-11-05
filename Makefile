@@ -5,10 +5,10 @@ WARN = -Wall
 CFLAGS = $(OPT) $(WARN) $(INC) $(LIB)
 
 # List of all .cpp files
-SIM_SRC = main.cpp predictor.cpp smith.cpp bimodal.cpp
+SIM_SRC = main.cpp predictor.cpp smith.cpp bimodal.cpp gshare.cpp hybrid.cpp
 
 # List corresponding compiled object files (.o files)
-SIM_OBJ = main.o predictor.o smith.o bimodal.o
+SIM_OBJ = main.o predictor.o smith.o bimodal.o gshare.o hybrid.o
  
 #################################
 
